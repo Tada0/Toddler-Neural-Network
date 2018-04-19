@@ -1,4 +1,10 @@
+# Toddler Neural Network
+
+## Build status
+
 [![Travis](https://travis-ci.org/Tada0/Toddler-Neural-Network.svg?branch=master)]()
+
+## About
 
 Toddler Neural Network is a simple neural network python library that is easy to use
 and fun to play with when you are taking your first steps in machine learning.
@@ -37,8 +43,7 @@ Example code in ``python``
     # Saving the network to file
     network.save()
     
-    # file name scheme:
-    # Date+Time+Inputs+Hidden+Outputs
+    # filename scheme:
     # example : 2018_04_18___13_21_23___3_2_1
     
 ## License
