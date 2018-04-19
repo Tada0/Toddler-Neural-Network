@@ -17,7 +17,7 @@ It provides:
 
 - simple single hidden layer neural network
 - feedforward and backpropagation methods
-- load/save function 
+- load/save possibility
 
 Installation with ``pip``:
 
@@ -41,8 +41,8 @@ Example code in ``python``
     # Saving the network to file
     network.save()
     
-    # filename scheme:
-    # example : 2018_04_18___13_21_23___3_2_1
+    # filename example:
+    # 2018_04_18___13_21_23___3_2_1
     
 ## License
     
