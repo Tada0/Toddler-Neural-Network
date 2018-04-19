@@ -4,6 +4,7 @@ python:
 # command to install dependencies
 install:
   - pip install numpy
+  - pip install tada0-toddler-neural-network
 # command to run tests
 script:
-  - python PyPI/toddlernetwork/neural_network.py
+  - python neural_network.py
