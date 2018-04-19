@@ -1,6 +1,6 @@
 import numpy as np
 import csv
-import nn_exceptions as nne
+from toddlernetwork import nn_exceptions as nne
 from time import localtime, strftime
 
 
