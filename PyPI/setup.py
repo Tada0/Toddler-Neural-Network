@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='tada0-toddler-neural-network',
-    version='1.1.1',
+    version='1.1.2',
     url='https://github.com/Tada0/Toddler-Neural-Network',
     description='Little neural network library',
     author='Tomasz Hołda',
@@ -12,4 +12,5 @@ setup(
             'tnn=toddlernetwork.__main__:main'
             ]
         },
+    install_requires=['numpy'],
 )

@@ -3,6 +3,7 @@ tada0_toddler_neural_network.egg-info/PKG-INFO
 tada0_toddler_neural_network.egg-info/SOURCES.txt
 tada0_toddler_neural_network.egg-info/dependency_links.txt
 tada0_toddler_neural_network.egg-info/entry_points.txt
+tada0_toddler_neural_network.egg-info/requires.txt
 tada0_toddler_neural_network.egg-info/top_level.txt
 toddlernetwork/__init__.py
 toddlernetwork/__main__.py
