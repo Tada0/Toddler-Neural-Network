@@ -1,8 +1,6 @@
 # Toddler Neural Network
 
-## Build status
-
-[![Travis](https://travis-ci.org/Tada0/Toddler-Neural-Network.svg?branch=master)]()
+## Build status [![Travis](https://travis-ci.org/Tada0/Toddler-Neural-Network.svg?branch=master)]()
 
 ## About
 
