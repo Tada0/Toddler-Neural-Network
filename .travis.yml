@@ -6,4 +6,4 @@ install:
   - pip install numpy
 # command to run tests
 script:
-  - python neural_network.py
+  - python PyPI/toddlernetwork/neural_network.py
