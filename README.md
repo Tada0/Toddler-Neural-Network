@@ -13,7 +13,7 @@ and fun to play with when you are taking your first steps in machine learning.
 - **Source:** https://github.com/Tada0/Toddler-Neural-Network
 - **Bug reports:** https://github.com/Tada0/Toddler-Neural-Network/issues
 - **Author:** https://github.com/Tada0
-- **Contact:** <a href="tomekholda@gmail.com">@</a>
+- **Contact:** <a href="mailto:tomekholda@gmail.com">@</a>
 
 It provides:
 
