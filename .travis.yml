@@ -6,4 +6,4 @@ install:
   - pip install numpy
 # command to run tests
 script:
-  - pytest # or py.test for Python versions 3.5 and belowd
+  - python neural_network.py
