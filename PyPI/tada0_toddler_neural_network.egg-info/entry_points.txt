@@ -1,0 +1,3 @@
+[console_scripts]
+tnn = toddlernetwork.__main__:main
+
