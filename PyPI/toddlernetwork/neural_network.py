@@ -1,5 +1,5 @@
 import numpy as np
-import csv
+import pickle
 from toddlernetwork import nn_exceptions as nne
 from time import localtime, strftime
 
@@ -16,19 +16,26 @@ class NeuralNetwork:
 
     def __init__(self, *args):
 
-        if len(args) == 3 and all(isinstance(param, int) for param in args) and all(param > 0 for param in args):
-            self.inputs = args[0]
-            self.hidden = args[1]
-            self.outputs = args[2]
-            self.weights_ih = np.random.rand(self.hidden, self.inputs) * 2 - 1  # Values (-1, 1)
-            self.weights_ho = np.random.rand(self.outputs, self.hidden) * 2 - 1  # Values (-1, 1)
-            self.bias_h = np.random.rand(self.hidden, 1) * 2 - 1  # Values (-1, 1)
-            self.bias_o = np.random.rand(self.outputs, 1) * 2 - 1  # Values (-1, 1)
-            self.learning_rate = 0.1
-        elif len(args) == 1 and isinstance(args[0], str):
-            self.load_network_weights(args[0])
-        else:
-            nne.ConstructorArgumentsExceptionHandler()
+        if not len(args) == 3:
+            nne.ConstructorArgumentsExceptionHandler_ArgumentsNumber()
+            return
+
+        if not all(isinstance(param, int) for param in args):
+            nne.ConstructorArgumentsExceptionHandler_ArgumentsType()
+            return
+
+        if not all(param > 0 for param in args):
+            nne.ConstructorArgumentsExceptionHandler_ArgumentsSign()
+            return
+
+        self.inputs = args[0]
+        self.hidden = args[1]
+        self.outputs = args[2]
+        self.weights_ih = np.random.rand(self.hidden, self.inputs) * 2 - 1  # Values (-1, 1)
+        self.weights_ho = np.random.rand(self.outputs, self.hidden) * 2 - 1  # Values (-1, 1)
+        self.bias_h = np.random.rand(self.hidden, 1) * 2 - 1  # Values (-1, 1)
+        self.bias_o = np.random.rand(self.outputs, 1) * 2 - 1  # Values (-1, 1)
+        self.learning_rate = 0.1
 
     def set_learning_rate(self, n: float):
 
@@ -36,11 +43,11 @@ class NeuralNetwork:
             self.learning_rate = n
 
         if not (isinstance(n, float) or isinstance(n, int)):
-            nne.SetLearningRateExceptionHandler_AggumentType()
+            nne.SetLearningRateExceptionHandler_ArgumentType()
             return
 
         if not n > 0:
-            nne.SetLearningRateExceptionHandler_AggumentType()
+            nne.SetLearningRateExceptionHandler_ArgumentSign()
             return
 
         functionality()
@@ -58,7 +65,7 @@ class NeuralNetwork:
             return outputs.reshape(1, len(outputs))[0]
 
         if not isinstance(inputs_array, list):
-            nne.SetLearningRateExceptionHandler_AggumentType()
+            nne.FeedforwardArgumentsExceptionHandler_ArgumentType()
             return
 
         if not (all((isinstance(element, int) or isinstance(element, float)) for element in inputs_array)):
@@ -143,74 +150,33 @@ class NeuralNetwork:
         functionality()
 
     def save(self):
+        global pickle_out
+
         date = strftime("%Y_%m_%d___%H_%M_%S", localtime())
-        file_name = date + '___{0}_{1}_{2}'.format(self.inputs, self.hidden, self.outputs)
+        file_name = date + '___{0}_{1}_{2}.tnn'.format(self.inputs, self.hidden, self.outputs)
 
-        with open(file_name, 'w', newline='') as csvfile:
-            fieldnames = ['inputs', 'hidden', 'outputs', 'weights_ih',
-                          'weights_ho', 'bias_h', 'bias_o', 'rate']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        try:
+            pickle_out = open(file_name, "wb")
+            pickle.dump(self, pickle_out)
+        except IOError:
+            print("Could not create file:", file_name)
+            exit(9911099102)
+        finally:
+            pickle_out.close()
 
-            writer.writeheader()
-            writer.writerow({'inputs': self.inputs})
-            writer.writerow({'hidden': self.hidden})
-            writer.writerow({'outputs': self.outputs})
+    @staticmethod
+    def load(file_name: str):
+        global pickle_in
+        global object_from_pickle
 
-            for x in range(self.weights_ih.shape[0]):
-                for y in range(self.weights_ih.shape[1]):
-                    writer.writerow({'weights_ih': self.weights_ih[x][y]})
+        try:
+            pickle_in = open(file_name, "rb")
+            object_from_pickle = pickle.load(pickle_in)
+        except IOError:
+            print("Could not open file", file_name)
+            exit(99110111102)
+        finally:
+            pickle_in.close()
 
-            for x in range(self.weights_ho.shape[0]):
-                for y in range(self.weights_ho.shape[1]):
-                    writer.writerow({'weights_ho': self.weights_ho[x][y]})
-
-            for x in range(len(self.bias_h)):
-                writer.writerow({'bias_h': self.bias_h[x][0]})
-
-            for x in range(len(self.bias_o)):
-                writer.writerow({'bias_o': self.bias_o[x][0]})
-
-            writer.writerow({'rate': self.learning_rate})
-
-    def load_network_weights(self, file: str):
-
-        data = []
-
-        with open(file, newline='') as csvfile:
-            dialect = csv.Sniffer().sniff(csvfile.read(1024))
-            csvfile.seek(0)
-            reader = csv.reader(csvfile, dialect)
-
-            for row in reader:
-                data.append(row)
-
-        self.inputs = int(data[1][0])
-        self.hidden = int(data[2][1])
-        self.outputs = int(data[3][2])
-
-        index = 4
-
-        self.weights_ih = np.empty((self.hidden, self.inputs), dtype=float)
-        self.weights_ho = np.empty((self.outputs, self.hidden), dtype=float)
-        self.bias_h = np.empty((self.hidden, 1), dtype=float)
-        self.bias_o = np.empty((self.outputs, 1), dtype=float)
-
-        for x in range(self.weights_ih.shape[0]):
-            for y in range(self.weights_ih.shape[1]):
-                self.weights_ih[x][y] = float(data[index][3])
-                index += 1
-
-        for x in range(self.weights_ho.shape[0]):
-            for y in range(self.weights_ho.shape[1]):
-                self.weights_ho[x][y] = float(data[index][4])
-                index += 1
-
-        for x in range(len(self.bias_h)):
-            self.bias_h[x][0] = float(data[index][5])
-            index += 1
-
-        for x in range(len(self.bias_o)):
-            self.bias_o[x][0] = float(data[index][6])
-            index += 1
-
-        self.learning_rate = data[index][7]
+        if object_from_pickle is not None:
+            return object_from_pickle

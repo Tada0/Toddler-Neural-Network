@@ -1,9 +1,21 @@
 # __init__ exceptions
 
-def ConstructorArgumentsExceptionHandler():
-    print("Wrong number or type of parameters")
-    print("Object not created")
+def ConstructorArgumentsExceptionHandler_ExecutionAborted():
+    print("Object not created, critical error")
+    print("Program execution aborted")
     exit(67656972)
+
+def ConstructorArgumentsExceptionHandler_ArgumentsNumber():
+    print("Wrong number of the parameters")
+    ConstructorArgumentsExceptionHandler_ExecutionAborted()
+
+def ConstructorArgumentsExceptionHandler_ArgumentsType():
+    print("Wrong type of the parameters")
+    ConstructorArgumentsExceptionHandler_ExecutionAborted()
+
+def ConstructorArgumentsExceptionHandler_ArgumentsSign():
+    print("Wrong value of the parameters")
+    ConstructorArgumentsExceptionHandler_ExecutionAborted()
 
 
 # set_learning_rate exceptions
