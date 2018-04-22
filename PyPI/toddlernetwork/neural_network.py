@@ -76,7 +76,7 @@ class NeuralNetwork:
             nne.FeedforwardArgumentsExceptionHandler_ListLength()
             return
 
-        functionality()
+        return functionality()
 
     def train(self, inputs_array: list, targets_array: list):
 
