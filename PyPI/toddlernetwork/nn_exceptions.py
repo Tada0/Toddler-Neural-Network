@@ -89,3 +89,14 @@ def TrainArgumentsExceptionHandler_TargetsListElementsType():
 def TrainArgumentsExceptionHandler_TargetsListLength():
     print("Wrong length of the targets_array")
     TrainArgumentsExceptionHandler_ExecutionAborted()
+
+# load and save exceptions
+
+def SaveFileCreationException():
+    print("Could not create file")
+    exit(9911099102)
+
+
+def LoadFileOpenException():
+    print("Could not open file")
+    exit(99110111102)

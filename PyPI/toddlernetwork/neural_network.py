@@ -159,8 +159,7 @@ class NeuralNetwork:
             pickle_out = open(file_name, "wb")
             pickle.dump(self, pickle_out)
         except IOError:
-            print("Could not create file:", file_name)
-            exit(9911099102)
+            nne.SaveFileCreationException()
         finally:
             pickle_out.close()
 
@@ -173,8 +172,7 @@ class NeuralNetwork:
             pickle_in = open(file_name, "rb")
             object_from_pickle = pickle.load(pickle_in)
         except IOError:
-            print("Could not open file", file_name)
-            exit(99110111102)
+            nne.LoadFileOpenException()
         finally:
             pickle_in.close()
 
