@@ -16,21 +16,18 @@ class NeuralNetwork:
 
     def __init__(self, *args):
 
-        try:
-            if len(args) == 3 and all(isinstance(param, int) for param in args) and all(param > 0 for param in args):
-                self.inputs = args[0]
-                self.hidden = args[1]
-                self.outputs = args[2]
-                self.weights_ih = np.random.rand(self.hidden, self.inputs) * 2 - 1  # Values (-1, 1)
-                self.weights_ho = np.random.rand(self.outputs, self.hidden) * 2 - 1  # Values (-1, 1)
-                self.bias_h = np.random.rand(self.hidden, 1) * 2 - 1  # Values (-1, 1)
-                self.bias_o = np.random.rand(self.outputs, 1) * 2 - 1  # Values (-1, 1)
-                self.learning_rate = 0.1
-            elif len(args) == 1 and isinstance(args[0], str):
-                self.load_network_weights(args[0])
-            else:
-                raise nne.ConstructorArgumentsException
-        except nne.ConstructorArgumentsException:
+        if len(args) == 3 and all(isinstance(param, int) for param in args) and all(param > 0 for param in args):
+            self.inputs = args[0]
+            self.hidden = args[1]
+            self.outputs = args[2]
+            self.weights_ih = np.random.rand(self.hidden, self.inputs) * 2 - 1  # Values (-1, 1)
+            self.weights_ho = np.random.rand(self.outputs, self.hidden) * 2 - 1  # Values (-1, 1)
+            self.bias_h = np.random.rand(self.hidden, 1) * 2 - 1  # Values (-1, 1)
+            self.bias_o = np.random.rand(self.outputs, 1) * 2 - 1  # Values (-1, 1)
+            self.learning_rate = 0.1
+        elif len(args) == 1 and isinstance(args[0], str):
+            self.load_network_weights(args[0])
+        else:
             nne.ConstructorArgumentsExceptionHandler()
 
     def set_learning_rate(self, n: float):
@@ -38,13 +35,15 @@ class NeuralNetwork:
         def functionality():
             self.learning_rate = n
 
-        try:
-            if (isinstance(n, float) or isinstance(n, int)) and n > 0:
-                functionality()
-            else:
-                raise nne.SetLearningRateException
-        except nne.SetLearningRateException:
-            nne.SetLearningRateExceptionHandler()
+        if not (isinstance(n, float) or isinstance(n, int)):
+            nne.SetLearningRateExceptionHandler_AggumentType()
+            return
+
+        if not n > 0:
+            nne.SetLearningRateExceptionHandler_AggumentType()
+            return
+
+        functionality()
 
     def feedforward(self, inputs_array: list) -> list:
 
@@ -58,15 +57,19 @@ class NeuralNetwork:
             outputs = np.array([*map(sigmoid, outputs)]).reshape(len(outputs), 1)
             return outputs.reshape(1, len(outputs))[0]
 
-        try:
-            if isinstance(inputs_array, list) and \
-                    (all((isinstance(element, int) or isinstance(element, float)) for element in inputs_array)) and \
-                    len(inputs_array) == self.inputs:
-                return functionality()
-            else:
-                raise nne.FeedforwardArgumentsException
-        except nne.FeedforwardArgumentsException:
-            nne.FeedforwardArgumentsExceptionHandler()
+        if not isinstance(inputs_array, list):
+            nne.SetLearningRateExceptionHandler_AggumentType()
+            return
+
+        if not (all((isinstance(element, int) or isinstance(element, float)) for element in inputs_array)):
+            nne.FeedforwardArgumentsExceptionHandler_ListElementsType()
+            return
+
+        if not len(inputs_array) == self.inputs:
+            nne.FeedforwardArgumentsExceptionHandler_ListLength()
+            return
+
+        functionality()
 
     def train(self, inputs_array: list, targets_array: list):
 
@@ -113,17 +116,31 @@ class NeuralNetwork:
             self.weights_ih = np.add(self.weights_ih, weight_ih_deltas)
             self.bias_h += hidden_gradient
 
-        try:
-            if isinstance(inputs_array, list) and \
-                    (all((isinstance(element, int) or isinstance(element, float)) for element in inputs_array)) and \
-                    len(inputs_array) == self.inputs and isinstance(targets_array, list) and \
-                    (all((isinstance(element, int) or isinstance(element, float)) for element in targets_array)) and \
-                    len(targets_array) == self.outputs:
-                functionality()
-            else:
-                raise nne.TrainArgumentsException
-        except nne.TrainArgumentsException:
-            nne.TrainArgumentsExceptionHandler()
+        if not isinstance(inputs_array, list):
+            nne.TrainArgumentsExceptionHandler_InputsListType()
+            return
+
+        if not (all((isinstance(element, int) or isinstance(element, float)) for element in inputs_array)):
+            nne.TrainArgumentsExceptionHandler_InputsListElementsType()
+            return
+
+        if not len(inputs_array) == self.inputs:
+            nne.TrainArgumentsExceptionHandler_InputsListLength()
+            return
+
+        if not isinstance(targets_array, list):
+            nne.TrainArgumentsExceptionHandler_TargetsListType()
+            return
+
+        if not (all((isinstance(element, int) or isinstance(element, float)) for element in targets_array)):
+            nne.TrainArgumentsExceptionHandler_TargetsListElementsType()
+            return
+
+        if not len(targets_array) == self.outputs:
+            nne.TrainArgumentsExceptionHandler_TargetsListLength()
+            return
+
+        functionality()
 
     def save(self):
         date = strftime("%Y_%m_%d___%H_%M_%S", localtime())
