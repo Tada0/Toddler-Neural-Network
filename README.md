@@ -34,9 +34,6 @@ Example code in ``python``
     # Create Neural Network object with 3 inputs, 2 hidden nodes and 1 output
     network = NN.NeuralNetwork(3, 2, 1)
     
-    # Create Neural Network from existing file
-    network = NN.NeuralNetwork('filename')
-    
     # Use of network methods 
     network.feedforward(inputs_list)
     network.train(inputs_list, answers_list)
@@ -44,8 +41,8 @@ Example code in ``python``
     # Saving the network to file
     network.save()
     
-    # filename example:
-    # 2018_04_18___13_21_23___3_2_1
+    # Create Neural Network from existing file
+    network = NN.NeuralNetwork.load(filename)
     
 ## License
     
